@@ -1,0 +1,30 @@
+/* Architects Daughter */
+@font-face {
+	font-family:"Architects Daughter";
+	font-style:normal;
+	font-weight:400;
+	src:local("Architects Daughter"), url("/assets/fonts/ArchitectsDaughter.woff") format("woff");
+}
+
+.collab_hint {
+	position: relative;
+
+	p {
+		position: absolute;
+		font-family: "Architects Daughter", cursive;
+		font-size: 15px;
+		font-size: .9375rem;
+		color: #838990;
+	}
+
+	&.tasklist{
+		padding-bottom: 30px;
+
+		p{
+			top: 0;
+			right: 180px;
+			padding: 0 45px 20px 0;
+			background: url(/system/modules/collab/assets/img/arrow_right_top.png) right top no-repeat;
+		}
+	}
+}
