@@ -13,7 +13,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_observer'];
 /**
  * Palettes
  */
-$arrDca['palettes'][\HeimrichHannot\Collab\CollabConfig::OBSERVER_SUBJECT_TASK] = '{general_legend},subject,title;{task_legend},tasklists,taskCriteria;{cronjob_legend},cronInterval,useCronExpression,priority,invoked;{observer_legend},observer;{expert_legend},debug,addObserverCriteria;{publish_legend},published;';
+$arrDca['palettes'][\HeimrichHannot\Collab\CollabConfig::OBSERVER_SUBJECT_TASK] = '{general_legend},subject,title;{task_legend},tasklists,taskCriteria;{cronjob_legend},cronInterval,useCronExpression,priority,invoked;{observer_legend},observer;{expert_legend},debug,addObserverStates;{publish_legend},published;';
 
 
 /**

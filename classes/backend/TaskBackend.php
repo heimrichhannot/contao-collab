@@ -83,6 +83,17 @@ class TaskBackend extends \Backend
 	}
 
 	/**
+	 * Get all author types as array
+	 * @param \DataContainer $dc
+	 *
+	 * @return array
+	 */
+	public function getAuthorTypes(\DataContainer $dc)
+	{
+		return CollabConfig::getAuthorTypes();
+	}
+
+	/**
 	 * Get all task types as array
 	 * @param \DataContainer $dc
 	 *

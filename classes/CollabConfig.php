@@ -11,13 +11,13 @@
 namespace HeimrichHannot\Collab;
 
 
+use HeimrichHannot\Haste\Util\Classes;
+
 class CollabConfig
 {
-	const OBSERVER_TASKS_FROM_MAILS = 'tasks_from_mails';
-	const OBSERVER_SUBJECT_TASK     = 'collab_task';
-
-	const COLLAB_DEFAULT_UPLOAD_DIRECTORY  = 'files/collab/uploads';
-	const COLLAB_TASK_ATTACHMENT_DIRECTORY = 'files/collab/tasks';
+	const OBSERVER_TASKS_FROM_MAILS        = 'tasks_from_mails';
+	const OBSERVER_NOTIFICATION_FROM_TASKS = 'notification_from_task';
+	const OBSERVER_SUBJECT_TASK            = 'collab_task';
 
 	const AUTHOR_TYPE_NONE   = 'none';
 	const AUTHOR_TYPE_MEMBER = 'member';
@@ -26,16 +26,21 @@ class CollabConfig
 	const TASK_TYPE_DEFAULT = 'default';
 	const TASK_TYPE_MAIL    = 'mail';
 
+	public static function getAuthorTypes()
+	{
+		return Classes::getConstantsByPrefixes(__CLASS__, array('AUTHOR_TYPE_'));
+	}
+
 	public static function getTaskTypes()
 	{
-		return array(static::TASK_TYPE_DEFAULT, static::TASK_TYPE_MAIL);
+		return Classes::getConstantsByPrefixes(__CLASS__, array('TASK_TYPE_'));
 	}
 
 	public static function getAttachmentSRC($blnReturnPath = false, $directory = null)
 	{
 		if ($directory === null)
 		{
-			$directory = static::COLLAB_DEFAULT_UPLOAD_DIRECTORY;
+			$directory = \Config::get('collab_default_upload_directory');
 		}
 
 		$objFolder = new \Folder($directory);
@@ -60,6 +65,6 @@ class CollabConfig
 
 	public static function getTaskAttachmentSRC($blnReturnPath = false)
 	{
-		return static::getAttachmentSRC($blnReturnPath, static::COLLAB_TASK_ATTACHMENT_DIRECTORY);
+		return static::getAttachmentSRC($blnReturnPath, \Config::get('collab_task_attachment_directory'));
 	}
 }

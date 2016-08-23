@@ -21,9 +21,9 @@ $GLOBALS['TL_MODELS']['tl_tasklist'] = 'HeimrichHannot\Collab\TaskListModel';
 array_insert(
 	$GLOBALS['OBSERVER']['OBSERVERS'],
 	0,
-	array
-	(
-		\HeimrichHannot\Collab\CollabConfig::OBSERVER_TASKS_FROM_MAILS => 'HeimrichHannot\Collab\Observer\TaskMailCreationObserver',
+	array(
+		\HeimrichHannot\Collab\CollabConfig::OBSERVER_TASKS_FROM_MAILS        => 'HeimrichHannot\Collab\Observer\TaskMailCreationObserver',
+		\HeimrichHannot\Collab\CollabConfig::OBSERVER_NOTIFICATION_FROM_TASKS => 'HeimrichHannot\Collab\Observer\TaskNotificationObserver',
 	)
 );
 
@@ -33,8 +33,7 @@ array_insert(
 array_insert(
 	$GLOBALS['OBSERVER']['SUBJECTS'],
 	1,
-	array
-	(
+	array(
 		\HeimrichHannot\Collab\CollabConfig::OBSERVER_SUBJECT_TASK => 'HeimrichHannot\Collab\Observer\TaskSubject',
 	)
 );
@@ -49,9 +48,7 @@ $GLOBALS['TL_HOOKS']['executePostActions'][] = array('HeimrichHannot\Collab\Back
  */
 if (TL_MODE == 'BE')
 {
-	$GLOBALS['TL_JAVASCRIPT']['collab-be'] =
-		'system/modules/collab/assets/js/collab-be' . (!$GLOBALS['TL_CONFIG']['debugMode'] ? '.min' : '') . '.js' . (TL_MODE
-																													 == 'BE' ? '' : '|static');;
+	$GLOBALS['TL_JAVASCRIPT']['collab-be'] = 'system/modules/collab/assets/js/collab-be' . (!$GLOBALS['TL_CONFIG']['debugMode'] ? '.min' : '') . '.js' . (TL_MODE == 'BE' ? '' : '|static');;
 	$GLOBALS['TL_CSS']['collab-be'] = 'system/modules/collab/assets/css/collab-be.css';
 }
 
@@ -61,3 +58,10 @@ if (TL_MODE == 'BE')
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'tasklists';
 $GLOBALS['TL_PERMISSIONS'][] = 'tasklistp';
+
+/**
+ * Config parameters
+ */
+
+$GLOBALS['TL_CONFIG']['collab_default_upload_directory']  = 'files/collab/uploads';
+$GLOBALS['TL_CONFIG']['collab_task_attachment_directory'] = 'files/collab/tasks';

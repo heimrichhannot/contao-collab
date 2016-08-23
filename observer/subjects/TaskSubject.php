@@ -17,7 +17,11 @@ use HeimrichHannot\Observer\Subject;
 
 class TaskSubject extends Subject
 {
-	public function run()
+	/**
+	 * Run the task observer
+	 * @return bool True on success, false on error
+	 */
+	public function notify()
 	{
 		$arrLists = deserialize($this->getModel()->tasklists, true);
 		$arrCriteria = deserialize($this->getModel()->taskCriteria, true);
@@ -31,7 +35,7 @@ class TaskSubject extends Subject
 				ObserverLog::add($this->objModel->id, 'No tasks for given filter found.', __CLASS__ . ':' . __METHOD__);
 			}
 
-			return true;
+			return;
 		}
 
 		if($this->objModel->debug)
@@ -40,7 +44,15 @@ class TaskSubject extends Subject
 			ObserverLog::add($this->objModel->id, $count . ($count == 1 ? ' Task' : ' Tasks') .' found for given filter.', __CLASS__ . ':' . __METHOD__);
 		}
 
-		$this->setRunIds($objTasks->fetchEach('id'));
+		while ($objTasks->next())
+		{
+			$this->context = $objTasks->current();
+
+			foreach ($this->observers as $obs)
+			{
+				$obs->update($this);
+			}
+		}
 
 		return true;
 	}

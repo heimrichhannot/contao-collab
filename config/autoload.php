@@ -30,6 +30,7 @@ ClassLoader::addClasses(array
 	// Observer
 	'HeimrichHannot\Collab\Observer\TaskSubject'              => 'system/modules/collab/observer/subjects/TaskSubject.php',
 	'HeimrichHannot\Collab\Observer\TaskMailCreationObserver' => 'system/modules/collab/observer/observers/TaskMailCreationObserver.php',
+	'HeimrichHannot\Collab\Observer\TaskNotificationObserver' => 'system/modules/collab/observer/observers/TaskNotificationObserver.php',
 	'HeimrichHannot\Collab\Observer\TaskCreationObserver'     => 'system/modules/collab/observer/observers/TaskCreationObserver.php',
 
 	// Classes
