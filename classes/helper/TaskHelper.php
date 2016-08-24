@@ -12,11 +12,63 @@ namespace HeimrichHannot\Collab\Helper;
 
 
 use HeimrichHannot\Collab\CollabConfig;
+use HeimrichHannot\Collab\TaskListModel;
 use HeimrichHannot\Haste\Dca\Member;
 use HeimrichHannot\Haste\Dca\User;
+use HeimrichHannot\Haste\Model\MemberModel;
+use HeimrichHannot\Haste\Model\UserModel;
+use HeimrichHannot\Versions\VersionModel;
+use Leafo\ScssPhp\Version;
+
 
 class TaskHelper extends Helper
 {
+	public static function getUserByIdAndType($intId, $strType, $blnActive = true, $blnMemberOnly = true)
+	{
+		switch ($strType)
+		{
+			case CollabConfig::AUTHOR_TYPE_MEMBER:
+				return $blnActive ? MemberModel::findActiveById($intId) : MemberModel::findByPk($intId);
+			case CollabConfig::AUTHOR_TYPE_USER:
+				if ($blnMemberOnly)
+				{
+					return $blnActive ? UserModel::findActiveById($intId) : UserModel::findByPk($intId);
+				}
+		}
+
+		return null;
+	}
+
+	public static function getCurrentAuthor(\Model $objTask, $blnActive = true, $blnMemberOnly = true)
+	{
+		return static::getUserByIdAndType($objTask->author, $objTask->authorType, $blnActive, $blnMemberOnly);
+	}
+
+	public static function getCurrentAssignee(\Model $objTask, $blnActive = true, $blnMemberOnly = true)
+	{
+		return static::getUserByIdAndType($objTask->assignee, $objTask->assigneeType, $blnActive, $blnMemberOnly);
+	}
+
+	public static function getPreviousAssignee(\Model $objTask, $blnMemberOnly = true, $blnActive = true)
+	{
+		$objPreviousVersion = VersionModel::findPreviousByModel($objTask);
+
+		if ($objPreviousVersion === null)
+		{
+			return null;
+		}
+
+		$arrData = deserialize($objPreviousVersion->data);
+
+		// assigneeType has changed, we cant compare users with members
+		if ($arrData[$objTask->assigneeType != $arrData['assigneeType']])
+		{
+			return null;
+		}
+
+		return static::getUserByIdAndType($arrData['assignee'], $arrData['assigneeType'], $blnActive, $blnMemberOnly);
+	}
+
 	public static function getUserOptionsByType($strType)
 	{
 		switch ($strType)
@@ -41,7 +93,7 @@ class TaskHelper extends Helper
 	{
 		$strFolder = ltrim(TaskHelper::getTaskAttachmentSRC($intTaskId, true), '/');
 
-		if(!file_exists(TL_ROOT . '/' . $strFolder) || !is_dir(TL_ROOT . '/' . $strFolder))
+		if (!file_exists(TL_ROOT . '/' . $strFolder) || !is_dir(TL_ROOT . '/' . $strFolder))
 		{
 			return false;
 		}

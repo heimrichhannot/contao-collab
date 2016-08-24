@@ -17,6 +17,7 @@ use HeimrichHannot\Collab\Helper\TaskHelper;
 use HeimrichHannot\Collab\Helper\TaskListHelper;
 use HeimrichHannot\Collab\TaskListModel;
 use HeimrichHannot\Collab\TaskModel;
+use HeimrichHannot\Versions\VersionModel;
 
 class TaskBackend extends \Backend
 {
@@ -104,65 +105,25 @@ class TaskBackend extends \Backend
 		return CollabConfig::getTaskTypes();
 	}
 
-	public function setAssigneeType($varValue, \DataContainer $dc)
-	{
-		if(!$varValue)
-		{
-			return TaskHelper::getCurrentUserType();
-		}
-
-		return $varValue;
-	}
-
-	public function setAssignee($varValue, \DataContainer $dc)
-	{
-		if(!$varValue)
-		{
-			return Helper::getCurrentUserId();
-		}
-
-		return $varValue;
-	}
-
 	public function getAssigneesAsOptions(\DataContainer $dc)
 	{
 		$type = $dc->activeRecord->assigneeType;
 
-		if($type == '')
+		if($type == '' || $type == CollabConfig::AUTHOR_TYPE_NONE)
 		{
-			$type = TL_MODE == 'FE' ? CollabConfig::AUTHOR_TYPE_MEMBER : CollabConfig::AUTHOR_TYPE_USER;
+			return array();
 		}
 
 		return TaskHelper::getUserOptionsByType($type);
-	}
-
-	public function setAuthorType($varValue, \DataContainer $dc)
-	{
-		if(!$varValue)
-		{
-			return TaskHelper::getCurrentUserType();
-		}
-
-		return $varValue;
-	}
-
-	public function setAuthor($varValue, \DataContainer $dc)
-	{
-		if(!$varValue)
-		{
-			return Helper::getCurrentUserId();
-		}
-
-		return $varValue;
 	}
 
 	public function getAuthorAsOptions(\DataContainer $dc)
 	{
 		$type = $dc->activeRecord->authorType;
 
-		if($type == '')
+		if($type == '' || $type == CollabConfig::AUTHOR_TYPE_NONE)
 		{
-			$type = TL_MODE == 'FE' ? CollabConfig::AUTHOR_TYPE_MEMBER : CollabConfig::AUTHOR_TYPE_USER;
+			return array();
 		}
 
 		return TaskHelper::getUserOptionsByType($type);

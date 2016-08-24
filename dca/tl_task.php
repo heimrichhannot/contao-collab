@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 		),
 		'sorting'           => array(
 			'mode'        => 2,
-			'fields'      => array('deadline DESC', 'dateAdded DESC'),
+			'fields'      => array('dateAdded DESC', 'deadline DESC'),
 			'panelLayout' => 'filter;sort,search,limit',
 			'filter'      => \HeimrichHannot\Collab\Backend\TaskBackend::filterList(),
 		),
@@ -136,7 +136,6 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 			'label'            => &$GLOBALS['TL_LANG']['tl_task']['authorType'],
 			'exclude'          => true,
 			'inputType'        => 'select',
-			'save_callback'    => array(array('HeimrichHannot\Collab\Backend\TaskBackend', 'setAuthorType')),
 			'options_callback' => array('HeimrichHannot\Collab\Backend\TaskBackend', 'getAuthorTypes'),
 			'reference'        => $GLOBALS['TL_LANG']['tl_task']['reference']['authorType'],
 			'eval'             => array(
@@ -153,7 +152,6 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 			'search'           => true,
 			'filter'           => true,
 			'inputType'        => 'select',
-			'save_callback'    => array(array('HeimrichHannot\Collab\Backend\TaskBackend', 'setAuthor')),
 			'options_callback' => array('HeimrichHannot\Collab\Backend\TaskBackend', 'getAuthorAsOptions'),
 			'eval'             => array(
 				'doNotCopy'          => true,
@@ -168,12 +166,7 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 			'exclude'       => true,
 			'filter'        => true,
 			'inputType'     => 'select',
-			'save_callback' => array(array('HeimrichHannot\Collab\Backend\TaskBackend', 'setAssigneeType')),
-			'options'       => array(
-				\HeimrichHannot\Collab\CollabConfig::AUTHOR_TYPE_NONE,
-				\HeimrichHannot\Collab\CollabConfig::AUTHOR_TYPE_MEMBER,
-				\HeimrichHannot\Collab\CollabConfig::AUTHOR_TYPE_USER,
-			),
+			'options_callback' => array('HeimrichHannot\Collab\Backend\TaskBackend', 'getAuthorTypes'),
 			'reference'     => $GLOBALS['TL_LANG']['tl_task']['reference']['authorType'],
 			'eval'          => array(
 				'doNotCopy'          => true,
@@ -189,7 +182,6 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 			'search'           => true,
 			'filter'           => true,
 			'inputType'        => 'select',
-			'save_callback'    => array(array('HeimrichHannot\Collab\Backend\TaskBackend', 'setAssignee')),
 			'options_callback' => array('HeimrichHannot\Collab\Backend\TaskBackend', 'getAssigneesAsOptions'),
 			'eval'             => array(
 				'doNotCopy'          => true,

@@ -16,6 +16,12 @@ $GLOBALS['TL_MODELS']['tl_task']     = 'HeimrichHannot\Collab\TaskModel';
 $GLOBALS['TL_MODELS']['tl_tasklist'] = 'HeimrichHannot\Collab\TaskListModel';
 
 /**
+ * Add persistent version table names
+ */
+$GLOBALS['PERSISTENT_VERSION_TABLES'][] = 'tl_task';
+$GLOBALS['PERSISTENT_VERSION_TABLES'][] = 'tl_tasklist';
+
+/**
  * Observer actions
  */
 array_insert(
