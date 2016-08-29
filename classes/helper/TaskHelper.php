@@ -51,27 +51,24 @@ class TaskHelper extends Helper
 
 	public static function getPreviousAssignee(\Model $objTask, $blnMemberOnly = true, $blnActive = true)
 	{
-		$objPreviousVersions = VersionModel::findAllPreviousByModel($objTask);
+		$objPreviousVersions = VersionModel::findPreviousByModelAndDataValues($objTask, array('assignee' => '([1-9]+)'));
 
 		if ($objPreviousVersions === null)
 		{
 			return null;
 		}
 
-		while ($objPreviousVersions->next())
+		$arrData = deserialize($objPreviousVersions->data);
+
+		// assigneeType has changed, we cant compare users with members
+		if ($arrData['assigneeType'] != $objTask->assigneeType)
 		{
-			$arrData = deserialize($objPreviousVersions->data);
+			return null;
+		}
 
-			// assigneeType has changed, we cant compare users with members
-			if ($arrData['assigneeType'] != $objTask->assigneeType)
-			{
-				return null;
-			}
-
-			if ($arrData['assignee'] != 0)
-			{
-				return static::getUserByIdAndType($arrData['assignee'], $arrData['assigneeType'], $blnActive, $blnMemberOnly);
-			}
+		if ($arrData['assignee'] != 0)
+		{
+			return static::getUserByIdAndType($arrData['assignee'], $arrData['assigneeType'], $blnActive, $blnMemberOnly);
 		}
 
 

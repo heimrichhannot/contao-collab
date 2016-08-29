@@ -48,7 +48,7 @@ class TaskMailCreationObserver extends TaskCreationObserver
 
 		ObserverLog::add(
 			$this->getSubject()->getModel()->id,
-			'Created new task from mail: "' . $objMail->subject . '" sent from: ' . $objMail->fromAddress,
+			'Created new task from mail: "' . $objMail->subject . ' '. $objMail->messageId . '" sent from: ' . $objMail->fromAddress,
 			__CLASS__ . ':' . __METHOD__ . '()'
 		);
 

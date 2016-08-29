@@ -24,23 +24,24 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Models
-	'HeimrichHannot\Collab\TaskListModel'                     => 'system/modules/collab/models/TaskListModel.php',
-	'HeimrichHannot\Collab\TaskModel'                         => 'system/modules/collab/models/TaskModel.php',
+	'HeimrichHannot\Collab\TaskListModel'                       => 'system/modules/collab/models/TaskListModel.php',
+	'HeimrichHannot\Collab\TaskModel'                           => 'system/modules/collab/models/TaskModel.php',
 
 	// Observer
-	'HeimrichHannot\Collab\Observer\TaskSubject'              => 'system/modules/collab/observer/subjects/TaskSubject.php',
-	'HeimrichHannot\Collab\Observer\TaskMailCreationObserver' => 'system/modules/collab/observer/observers/TaskMailCreationObserver.php',
-	'HeimrichHannot\Collab\Observer\TaskNotificationObserver' => 'system/modules/collab/observer/observers/TaskNotificationObserver.php',
-	'HeimrichHannot\Collab\Observer\TaskCreationObserver'     => 'system/modules/collab/observer/observers/TaskCreationObserver.php',
+	'HeimrichHannot\Collab\Observer\TaskSubject'                => 'system/modules/collab/observer/subjects/TaskSubject.php',
+	'HeimrichHannot\Collab\Observer\TaskMailCreationObserver'   => 'system/modules/collab/observer/observers/TaskMailCreationObserver.php',
+	'HeimrichHannot\Collab\Observer\TaskRemoveAssigneeObserver' => 'system/modules/collab/observer/observers/TaskRemoveAssigneeObserver.php',
+	'HeimrichHannot\Collab\Observer\TaskNotificationObserver'   => 'system/modules/collab/observer/observers/TaskNotificationObserver.php',
+	'HeimrichHannot\Collab\Observer\TaskCreationObserver'       => 'system/modules/collab/observer/observers/TaskCreationObserver.php',
 
 	// Classes
-	'HeimrichHannot\Collab\CollabConfig'                      => 'system/modules/collab/classes/CollabConfig.php',
-	'HeimrichHannot\Collab\Helper\Helper'                     => 'system/modules/collab/classes/helper/Helper.php',
-	'HeimrichHannot\Collab\Helper\TaskHelper'                 => 'system/modules/collab/classes/helper/TaskHelper.php',
-	'HeimrichHannot\Collab\Helper\TaskListHelper'             => 'system/modules/collab/classes/helper/TaskListHelper.php',
-	'HeimrichHannot\Collab\Backend\BackendHooks'              => 'system/modules/collab/classes/backend/BackendHooks.php',
-	'HeimrichHannot\Collab\Backend\TaskBackend'               => 'system/modules/collab/classes/backend/TaskBackend.php',
-	'HeimrichHannot\Collab\Backend\ObserverBackend'           => 'system/modules/collab/classes/backend/ObserverBackend.php',
+	'HeimrichHannot\Collab\CollabConfig'                        => 'system/modules/collab/classes/CollabConfig.php',
+	'HeimrichHannot\Collab\Helper\Helper'                       => 'system/modules/collab/classes/helper/Helper.php',
+	'HeimrichHannot\Collab\Helper\TaskHelper'                   => 'system/modules/collab/classes/helper/TaskHelper.php',
+	'HeimrichHannot\Collab\Helper\TaskListHelper'               => 'system/modules/collab/classes/helper/TaskListHelper.php',
+	'HeimrichHannot\Collab\Backend\BackendHooks'                => 'system/modules/collab/classes/backend/BackendHooks.php',
+	'HeimrichHannot\Collab\Backend\TaskBackend'                 => 'system/modules/collab/classes/backend/TaskBackend.php',
+	'HeimrichHannot\Collab\Backend\ObserverBackend'             => 'system/modules/collab/classes/backend/ObserverBackend.php',
 ));
 
 

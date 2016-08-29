@@ -107,7 +107,7 @@ class TaskNotificationObserver extends NotificationObserver
 	public static function getPalettes(\DataContainer $dc = null)
 	{
 		return array(
-			CollabConfig::OBSERVER_SUBJECT_TASK => 'notification,notifyAssignee,notifyPreviousAssignee,members,memberGroups,limitMembers,skipNotifyAssignee,skipNotifyPreviousAssignee,',
+			CollabConfig::OBSERVER_SUBJECT_TASK => 'notification,notifyAssignee,notifyPreviousAssignee,members,memberGroups,limitMembers,skipNotifyAssignee,skipNotifyPreviousAssignee',
 		);
 	}
 

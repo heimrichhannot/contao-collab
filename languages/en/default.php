@@ -11,9 +11,9 @@
 /**
  * Observer actions
  */
-
 $GLOBALS['TL_LANG']['OBSERVER_OBSERVER'][\HeimrichHannot\Collab\CollabConfig::OBSERVER_TASKS_FROM_MAILS] = 'Create tasks from mails (Filter by IMAP search criteria)';
 $GLOBALS['TL_LANG']['OBSERVER_OBSERVER'][\HeimrichHannot\Collab\CollabConfig::OBSERVER_NOTIFICATION_FROM_TASKS] = 'Create notifications from tasks (Filter by Task search criteria)';
+$GLOBALS['TL_LANG']['OBSERVER_OBSERVER'][\HeimrichHannot\Collab\CollabConfig::OBSERVER_TASKS_REMOVE_ASSIGNEE] = 'Remove tasks assignee (Filter by Task search criteria)';
 
 
 /**

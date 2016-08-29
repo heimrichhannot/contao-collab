@@ -30,6 +30,7 @@ array_insert(
 	array(
 		\HeimrichHannot\Collab\CollabConfig::OBSERVER_TASKS_FROM_MAILS        => 'HeimrichHannot\Collab\Observer\TaskMailCreationObserver',
 		\HeimrichHannot\Collab\CollabConfig::OBSERVER_NOTIFICATION_FROM_TASKS => 'HeimrichHannot\Collab\Observer\TaskNotificationObserver',
+		\HeimrichHannot\Collab\CollabConfig::OBSERVER_TASKS_REMOVE_ASSIGNEE   => 'HeimrichHannot\Collab\Observer\TaskRemoveAssigneeObserver',
 	)
 );
 

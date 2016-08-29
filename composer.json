@@ -1,34 +1,43 @@
 {
-    "name": "heimrichhannot/contao-collab",
-    "description":"A contao collaboration tool.",
-    "keywords":["contao", "collaboration", "tasks", "tasklists"],
-    "type": "contao-module",
-    "homepage":"https://github.com/heimrichhannot/contao-collab",
-    "license":"LGPL-3.0+",
-    "authors":[
-        {
-            "name":"Heimrich & Hannot",
-            "email":"digitales@heimrich-hannot.de",
-            "homepage":"http://www.heimrich-hannot.de",
-            "role":"Developer"
-        }
-    ],
-    "support":{
-        "issues":"https://github.com/heimrichhannot/contao-collab/issues"
-    },
-    "require": {
-        "contao/core": ">=3.2,<4-dev",
-        "contao-community-alliance/composer-installer": "*",
-        "heimrichhannot/observer": "~1.0"
-    },
-    "autoload": {
-        "classmap": [""]
-    },
-    "extra": {
-        "contao": {
-            "sources": {
-                "": "system/modules/collab"
-            }
-        }
+  "name": "heimrichhannot/contao-collab",
+  "description": "A contao collaboration tool.",
+  "keywords": [
+    "contao",
+    "collaboration",
+    "tasks",
+    "tasklists"
+  ],
+  "type": "contao-module",
+  "homepage": "https://github.com/heimrichhannot/contao-collab",
+  "license": "LGPL-3.0+",
+  "authors": [
+    {
+      "name": "Heimrich & Hannot",
+      "email": "digitales@heimrich-hannot.de",
+      "homepage": "http://www.heimrich-hannot.de",
+      "role": "Developer"
     }
+  ],
+  "support": {
+    "issues": "https://github.com/heimrichhannot/contao-collab/issues"
+  },
+  "require": {
+    "contao/core": ">=3.2,<4-dev",
+    "contao-community-alliance/composer-installer": "*",
+    "heimrichhannot/observer": "~1.0",
+    "heimrichhannot/haste_plus": "~1.0",
+    "heimrichhannot/versions": "~1.0"
+  },
+  "autoload": {
+    "classmap": [
+      ""
+    ]
+  },
+  "extra": {
+    "contao": {
+      "sources": {
+        "": "system/modules/collab"
+      }
+    }
+  }
 }

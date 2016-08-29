@@ -17,6 +17,7 @@ class CollabConfig
 {
 	const OBSERVER_TASKS_FROM_MAILS        = 'tasks_from_mails';
 	const OBSERVER_NOTIFICATION_FROM_TASKS = 'notification_from_task';
+	const OBSERVER_TASKS_REMOVE_ASSIGNEE   = 'tasks_remove_assignee';
 	const OBSERVER_SUBJECT_TASK            = 'collab_task';
 
 	const AUTHOR_TYPE_NONE   = 'none';

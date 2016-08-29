@@ -14,6 +14,8 @@ class TaskModel extends \Contao\Model
 	const TASK_FILTER_CRITERIA_PUBLISHED        = 'PUBLISHED';
 	const TASK_FILTER_CRITERIA_ASSIGNEE_CHANGED = 'ASSIGNEE_CHANGED';
 	const TASK_FILTER_CRITERIA_EXISTING_TASK    = 'EXISTING_TASK';
+	const TASK_FILTER_CRITERIA_COMPLETE         = 'COMPLETE';
+	const TASK_FILTER_CRITERIA_OPEN             = 'OPEN';
 
 	protected static $strTable = 'tl_task';
 
@@ -94,20 +96,46 @@ class TaskModel extends \Contao\Model
 		{
 			switch ($strCriteria)
 			{
+				case static::TASK_FILTER_CRITERIA_COMPLETE:
+					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_OPEN]))
+					{
+						break;
+					}
+					$arrColumns[] = "$t.complete = 1";
+					break;
+				case static::TASK_FILTER_CRITERIA_OPEN:
+					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_COMPLETE]))
+					{
+						break;
+					}
+					$arrColumns[] = "$t.complete != 1";
+					break;
 				case static::TASK_FILTER_CRITERIA_NEW_TASK:
-					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_EXISTING_TASK])) break;
+					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_EXISTING_TASK]))
+					{
+						break;
+					}
 					$arrColumns[] = "$t.tstamp > 0 AND $t.tstamp = $t.dateAdded";
 					break;
 				case static::TASK_FILTER_CRITERIA_EXISTING_TASK:
-					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_NEW_TASK])) break;
+					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_NEW_TASK]))
+					{
+						break;
+					}
 					$arrColumns[] = "$t.tstamp > 0 AND $t.tstamp > $t.dateAdded";
 					break;
 				case static::TASK_FILTER_CRITERIA_HAS_ASSIGNEE:
-					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_NO_ASSIGNEE])) break;
+					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_NO_ASSIGNEE]))
+					{
+						break;
+					}
 					$arrColumns[] = "$t.assignee > 0";
 					break;
 				case static::TASK_FILTER_CRITERIA_NO_ASSIGNEE:
-					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_HAS_ASSIGNEE])) break;
+					if (isset($arrCriteria[static::TASK_FILTER_CRITERIA_HAS_ASSIGNEE]))
+					{
+						break;
+					}
 					$arrColumns[] = "$t.assignee = 0";
 					break;
 				case static::TASK_FILTER_CRITERIA_PUBLISHED:
