@@ -23,19 +23,21 @@ class TaskMailCreationObserver extends TaskCreationObserver
 	{
 		/**  @var \PhpImap\IncomingMail $objMail */
 		$objMail = $this->getSubject()->getContext();
-		$this->objTask              = new TaskModel();
-		$this->objTask->tstamp      = time();
-		$this->objTask->dateAdded   = time();
-		$this->objTask->title       = $objMail->subject;
-		$this->objTask->description = $objMail->textPlain;
-		$this->objTask->type        = CollabConfig::TASK_TYPE_MAIL;
-		$this->objTask->fromName    = $objMail->fromName;
-		$this->objTask->fromEmail   = $objMail->fromAddress;
-		$this->objTask->tasklist    = $this->getSubject()->getModel()->tasklist;
 
-		if($this->objTask->save() === null)
+
+		$arrTaskAttributes = array(
+			'type'      => CollabConfig::TASK_TYPE_MAIL,
+			'fromName'  => $objMail->fromName,
+			'fromEmail' => $objMail->fromAddress,
+			'tasklist'  => $this->getSubject()->getModel()->tasklist,
+		);
+
+		$this->objTask = TaskModel::createTask(TaskModel::initTask($objMail->subject, $objMail->textPlain, $arrTaskAttributes));
+
+		if ($this->objTask === null)
 		{
 			$this->setState(Observer::STATE_ERROR);
+
 			return false;
 		}
 
@@ -48,7 +50,7 @@ class TaskMailCreationObserver extends TaskCreationObserver
 
 		ObserverLog::add(
 			$this->getSubject()->getModel()->id,
-			'Created new task from mail: "' . $objMail->subject . ' '. $objMail->messageId . '" sent from: ' . $objMail->fromAddress,
+			'Created new task from mail: "' . $objMail->subject . ' ' . $objMail->messageId . '" sent from: ' . $objMail->fromAddress,
 			__CLASS__ . ':' . __METHOD__ . '()'
 		);
 
@@ -58,7 +60,7 @@ class TaskMailCreationObserver extends TaskCreationObserver
 	/**
 	 * Move attachments to the task attachment folder, files has been saved by MailSubject already to ObserverConfig::OBSERVER_DIRECTORY_ATTACHMENT
 	 *
-	 * @param array     $arrAttachments
+	 * @param array $arrAttachments
 	 */
 	protected function saveAttachments(array $arrAttachments)
 	{
@@ -86,8 +88,7 @@ class TaskMailCreationObserver extends TaskCreationObserver
 
 	public static function getPalettes(\DataContainer $dc = null)
 	{
-		return array
-		(
+		return array(
 			ObserverConfig::OBSERVER_SUBJECT_MAIl => 'tasklist',
 		);
 	}

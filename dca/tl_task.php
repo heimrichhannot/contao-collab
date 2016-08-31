@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 		),
 		'sorting'           => array(
 			'mode'        => 2,
-			'fields'      => array('dateAdded DESC', 'deadline DESC'),
+			'fields'      => array('id DESC', 'dateAdded', 'deadline'),
 			'panelLayout' => 'filter;sort,search,limit',
 			'filter'      => \HeimrichHannot\Collab\Backend\TaskBackend::filterList(),
 		),
@@ -88,8 +88,10 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 	),
 	'fields'      => array(
 		'id'           => array(
-			'label' => &$GLOBALS['TL_LANG']['tl_task']['id'],
-			'sql'   => "int(10) unsigned NOT NULL auto_increment",
+			'label'   => &$GLOBALS['TL_LANG']['tl_task']['id'],
+			'flag'    => 12,
+			'sorting' => true,
+			'sql'     => "int(10) unsigned NOT NULL auto_increment",
 		),
 		'tasklist'     => array(
 			'label'            => &$GLOBALS['TL_LANG']['tl_task']['tasklist'],
@@ -162,19 +164,19 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 			'sql'              => "int(10) unsigned NOT NULL default '0'",
 		),
 		'assigneeType' => array(
-			'label'         => &$GLOBALS['TL_LANG']['tl_task']['assigneeType'],
-			'exclude'       => true,
-			'filter'        => true,
-			'inputType'     => 'select',
+			'label'            => &$GLOBALS['TL_LANG']['tl_task']['assigneeType'],
+			'exclude'          => true,
+			'filter'           => true,
+			'inputType'        => 'select',
 			'options_callback' => array('HeimrichHannot\Collab\Backend\TaskBackend', 'getAuthorTypes'),
-			'reference'     => $GLOBALS['TL_LANG']['tl_task']['reference']['authorType'],
-			'eval'          => array(
+			'reference'        => $GLOBALS['TL_LANG']['tl_task']['reference']['authorType'],
+			'eval'             => array(
 				'doNotCopy'          => true,
 				'submitOnChange'     => true,
 				'tl_class'           => 'w50 clr',
 				'includeBlankOption' => true,
 			),
-			'sql'           => "varchar(255) NOT NULL default ''",
+			'sql'              => "varchar(255) NOT NULL default ''",
 		),
 		'assignee'     => array(
 			'label'            => &$GLOBALS['TL_LANG']['tl_task']['assignee'],

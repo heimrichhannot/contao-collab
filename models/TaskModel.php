@@ -4,6 +4,7 @@ namespace HeimrichHannot\Collab;
 
 use HeimrichHannot\Collab\Helper\TaskHelper;
 use HeimrichHannot\Haste\Util\Classes;
+use HeimrichHannot\Versions\Version;
 use HeimrichHannot\Versions\VersionModel;
 
 class TaskModel extends \Contao\Model
@@ -19,6 +20,53 @@ class TaskModel extends \Contao\Model
 
 	protected static $strTable = 'tl_task';
 
+	/**
+	 * Initialize a new TaskModel with title, description and set attributes but do not save
+	 *
+	 * @param        $title         Task title
+	 * @param string $description   Task description
+	 * @param array  $arrAttributes Array of attributes that will be set as Taskmodel attributes
+	 *
+	 * @return TaskModel The non saved TaskModel
+	 */
+	public static function initTask($title, $description = '', array $arrAttributes = array())
+	{
+		$time = time();
+
+		$objTask              = new static();
+		$objTask->tstamp      = $time;
+		$objTask->dateAdded   = $time;
+		$objTask->type        = CollabConfig::TASK_TYPE_DEFAULT;
+		$objTask->title       = $title;
+		$objTask->description = $description;
+
+		foreach ($arrAttributes as $strKey => $varValue)
+		{
+			$objTask->{$strKey} = $varValue;
+		}
+
+		return $objTask;
+	}
+
+	/**
+	 * Create the Task, save in database and create new version
+	 *
+	 * @param TaskModel $objTask
+	 * @param bool      $blnCreateVersion
+	 *
+	 * @return TaskModel|null Return the new created Model or null if something went wrong
+	 */
+	public static function createTask(TaskModel $objTask, $blnCreateVersion = true)
+	{
+		$objTask = $objTask->save();
+
+		if ($blnCreateVersion && $objTask !== null)
+		{
+			Version::createFromModel($objTask);
+		}
+
+		return $objTask;
+	}
 
 	public static function findByListsAndCriteria(array $arrListIds, array $arrCriteria = array(), array $arrOptions = array())
 	{

@@ -41,6 +41,7 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\Collab\Helper\TaskListHelper'               => 'system/modules/collab/classes/helper/TaskListHelper.php',
 	'HeimrichHannot\Collab\Backend\BackendHooks'                => 'system/modules/collab/classes/backend/BackendHooks.php',
 	'HeimrichHannot\Collab\Backend\TaskBackend'                 => 'system/modules/collab/classes/backend/TaskBackend.php',
+	'HeimrichHannot\Collab\Backend\ModuleBackend'               => 'system/modules/collab/classes/backend/ModuleBackend.php',
 	'HeimrichHannot\Collab\Backend\ObserverBackend'             => 'system/modules/collab/classes/backend/ObserverBackend.php',
 ));
 
