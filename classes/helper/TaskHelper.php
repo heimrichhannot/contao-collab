@@ -17,6 +17,7 @@ use HeimrichHannot\Haste\Dca\Member;
 use HeimrichHannot\Haste\Dca\User;
 use HeimrichHannot\Haste\Model\MemberModel;
 use HeimrichHannot\Haste\Model\UserModel;
+use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Versions\VersionModel;
 use Leafo\ScssPhp\Version;
 
@@ -77,10 +78,26 @@ class TaskHelper extends Helper
 
 	public static function getUserOptionsByType($strType)
 	{
+		$arrOptions = array();
+
 		switch ($strType)
 		{
 			case CollabConfig::AUTHOR_TYPE_MEMBER:
-				return Member::getMembersAsOptions();
+
+				if(!FE_USER_LOGGED_IN)
+				{
+					return Member::getMembersAsOptions();
+				}
+
+				$objMembers = MemberModel::findActiveByGroups(deserialize(\FrontendUser::getInstance()->groups, true));
+
+				if($objMembers === null)
+				{
+					return $arrOptions;
+				}
+
+				return Arrays::concatArrays(' ', $objMembers->fetchEach('firstname'), $objMembers->fetchEach('lastname'));
+
 			case CollabConfig::AUTHOR_TYPE_USER:
 				return User::getUsersAsOptions();
 		}
