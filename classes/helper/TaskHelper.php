@@ -76,20 +76,33 @@ class TaskHelper extends Helper
 		return null;
 	}
 
-	public static function getUserOptionsByType($strType)
+	public static function getUserOptionsByTypeAndList($strType, $intList = 0)
 	{
 		$arrOptions = array();
+		$objTaskList = TaskListModel::findPublishedById($intList);
+		$arrGroups = array();
 
 		switch ($strType)
 		{
 			case CollabConfig::AUTHOR_TYPE_MEMBER:
+			default:
 
-				if(!FE_USER_LOGGED_IN)
+				if($objTaskList !== null && $objTaskList->protected)
+				{
+					$arrGroups = deserialize($objTaskList->memberGroups, true);
+				}
+
+				if(FE_USER_LOGGED_IN)
+				{
+					$arrGroups = array_intersect(deserialize(\FrontendUser::getInstance()->groups, true), $arrGroups);
+				}
+
+				if(empty($arrGroups) && !FE_USER_LOGGED_IN)
 				{
 					return Member::getMembersAsOptions();
 				}
 
-				$objMembers = MemberModel::findActiveByGroups(deserialize(\FrontendUser::getInstance()->groups, true));
+				$objMembers = MemberModel::findActiveByGroups($arrGroups);
 
 				if($objMembers === null)
 				{
@@ -99,15 +112,38 @@ class TaskHelper extends Helper
 				return Arrays::concatArrays(' ', $objMembers->fetchEach('firstname'), $objMembers->fetchEach('lastname'));
 
 			case CollabConfig::AUTHOR_TYPE_USER:
-				return User::getUsersAsOptions();
+
+				if($objTaskList !== null && $objTaskList->protected)
+				{
+					$arrGroups = deserialize($objTaskList->userGroups, true);
+				}
+
+				if(BE_USER_LOGGED_IN)
+				{
+					$arrGroups = array_intersect(deserialize(\BackendUser::getInstance()->groups, true), $arrGroups);
+				}
+
+				if(empty($arrGroups) && !BE_USER_LOGGED_IN)
+				{
+					return User::getUsersAsOptions();
+				}
+
+				$objUsers = UserModel::findActiveByGroups($arrGroups);
+
+				if($objUsers === null)
+				{
+					return $arrOptions;
+				}
+
+				return $objUsers->fetchEach('name');
 		}
 
-		return array();
+		return $arrOptions;
 	}
 
-	public static function getUserNameByTypeAndId($strType, $intId)
+	public static function getUserNameByTypeAndIdAndList($strType, $intId)
 	{
-		$arrOptions = static::getUserOptionsByType($strType);
+		$arrOptions = static::getUserOptionsByTypeAndList($strType);
 
 		return isset($arrOptions[$intId]) ? $arrOptions[$intId] : '';
 	}

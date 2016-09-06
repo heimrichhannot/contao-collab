@@ -27,7 +27,7 @@ class TaskBackend extends \Backend
 		$arrFilter = array();
 		$objModels = TaskListModel::findExcludedByUserTypeAndGroups(Helper::getCurrentUserType(), Helper::getCurrentUserGroups());
 
-		if($objModels === null)
+		if ($objModels === null)
 		{
 			return $arrFilter;
 		}
@@ -42,15 +42,15 @@ class TaskBackend extends \Backend
 
 	public function setDefaults($strTable, $insertID, $arrSet, \DataContainer $dc)
 	{
-		if(($objModel = TaskModel::findByPk($insertID)) === null)
+		if (($objModel = TaskModel::findByPk($insertID)) === null)
 		{
 			return;
 		}
 
-		$objModel->authorType = Helper::getCurrentUserType();
+		$objModel->authorType   = Helper::getCurrentUserType();
 		$objModel->assigneeType = Helper::getCurrentUserType();
-		$objModel->author = Helper::getCurrentUserId();
-		$objModel->assignee = Helper::getCurrentUserId();
+		$objModel->author       = Helper::getCurrentUserId();
+		$objModel->assignee     = Helper::getCurrentUserId();
 
 		$objModel->save();
 	}
@@ -65,15 +65,15 @@ class TaskBackend extends \Backend
 		$totalTasklists = TaskListModel::countAll();
 
 
-		if($totalTasklists > 0)
+		if ($totalTasklists > 0)
 		{
 			return;
 		}
 
 
-		$objTemplate = new \BackendTemplate('hint_collab');
+		$objTemplate        = new \BackendTemplate('hint_collab');
 		$objTemplate->class = 'tasklist';
-		$objTemplate->text = $GLOBALS['TL_LANG']['COLLAB']['tasklist_hint'];
+		$objTemplate->text  = $GLOBALS['TL_LANG']['COLLAB']['tasklist_hint'];
 
 		\Message::addRaw($objTemplate->parse());
 	}
@@ -85,6 +85,7 @@ class TaskBackend extends \Backend
 
 	/**
 	 * Get all author types as array
+	 *
 	 * @param \DataContainer $dc
 	 *
 	 * @return array
@@ -96,6 +97,7 @@ class TaskBackend extends \Backend
 
 	/**
 	 * Get all task types as array
+	 *
 	 * @param \DataContainer $dc
 	 *
 	 * @return array
@@ -107,26 +109,12 @@ class TaskBackend extends \Backend
 
 	public function getAssigneesAsOptions(\DataContainer $dc)
 	{
-		$type = $dc->activeRecord->assigneeType;
-
-		if($type == '' || $type == CollabConfig::AUTHOR_TYPE_NONE)
-		{
-			return array();
-		}
-
-		return TaskHelper::getUserOptionsByType($type);
+		return TaskHelper::getUserOptionsByTypeAndList($dc->activeRecord->assigneeType, $dc->activeRecord->tasklist);
 	}
 
 	public function getAuthorAsOptions(\DataContainer $dc)
 	{
-		$type = $dc->activeRecord->authorType;
-
-		if($type == '' || $type == CollabConfig::AUTHOR_TYPE_NONE)
-		{
-			return array();
-		}
-
-		return TaskHelper::getUserOptionsByType($type);
+		return TaskHelper::getUserOptionsByTypeAndList($dc->activeRecord->authorType, $dc->activeRecord->tasklist);
 	}
 
 	public function toggleTask($intId, $blnVisible)
@@ -155,8 +143,7 @@ class TaskBackend extends \Backend
 		}
 
 		// Update the database
-		$objDatabase->prepare("UPDATE tl_task SET tstamp=" . time() . ", complete='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-			->execute($intId);
+		$objDatabase->prepare("UPDATE tl_task SET tstamp=" . time() . ", complete='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
 		$objVersions->create();
 		\Controller::log('A new version of record "tl_task.id=' . $intId . '" has been created' . $this->getParentEntries('tl_task', $intId), 'TaskBackend toggleTask()', TL_GENERAL);
@@ -164,24 +151,25 @@ class TaskBackend extends \Backend
 
 	/**
 	 * Add an image to each record
-	 * @param array         $row
-	 * @param string        $label
+	 *
+	 * @param array          $row
+	 * @param string         $label
 	 * @param \DataContainer $dc
-	 * @param array         $args
+	 * @param array          $args
 	 *
 	 * @return array
 	 */
 	public function listItem($row, $label, \DataContainer $dc, $args)
 	{
 		$blnChecked = \Widget::optionChecked($row['complete'], array('', 1));
-		$checked = $blnChecked ? ' checked="checked"' : '';
-		$onclick = ' onclick="CollabBackend.toggleTask(this,' . $row['id'] . ',\'' . $dc->table . '\');"';
-		$title = $GLOBALS['TL_LANG']['tl_task']['toggleTaskTitle'];
+		$checked    = $blnChecked ? ' checked="checked"' : '';
+		$onclick    = ' onclick="CollabBackend.toggleTask(this,' . $row['id'] . ',\'' . $dc->table . '\');"';
+		$title      = $GLOBALS['TL_LANG']['tl_task']['toggleTaskTitle'];
 
 		$objTask = TaskModel::findByPk($row['id']);
 
 		$args[0] = '<div class="complete_task"><input title="' . $title . '" type="checkbox" value="' . $row['complete'] . '" name="complete"' . $checked . $onclick . '/></div>';
-		$args[3] = TaskHelper::getUserNameByTypeAndId($objTask->assigneeType, $objTask->assignee);
+		$args[3] = TaskHelper::getUserNameByTypeAndIdAndList($objTask->assigneeType, $objTask->assignee, $objTask->tasklist);
 		$args[4] = TaskListHelper::getTaskListName($objTask->tasklist);
 
 		return $args;
@@ -239,8 +227,7 @@ class TaskBackend extends \Backend
 		}
 
 		// Update the database
-		$objDatabase->prepare("UPDATE tl_task SET tstamp=" . time() . ", published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-			->execute($intId);
+		$objDatabase->prepare("UPDATE tl_task SET tstamp=" . time() . ", published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
 		$objVersions->create();
 		\Controller::log('A new version of record "tl_task.id=' . $intId . '" has been created' . $this->getParentEntries('tl_task', $intId), 'TaskBackend toggleVisibility()', TL_GENERAL);

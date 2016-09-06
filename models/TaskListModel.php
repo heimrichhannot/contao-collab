@@ -9,13 +9,35 @@ class TaskListModel extends \Model
 
 
 	/**
+	 * Find published task list by user group type and groups
+	 *
+	 * @param array $intId      The tasklist id
+	 * @param array $arrOptions An optional options array
+	 *
+	 * @return TaskListModel|null The tasklist model or null if none found
+	 */
+	public static function findPublishedById($intId, $arrOptions = array())
+	{
+		$t          = static::$strTable;
+		$arrColumns = array("$t.id = ?");
+
+		if (!BE_USER_LOGGED_IN)
+		{
+			$time         = \Date::floorToMinute();
+			$arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
+		}
+
+		return static::findOneBy($arrColumns, array($intId), $arrOptions);
+	}
+
+	/**
 	 * Find published task lists by user group type and groups
 	 *
 	 * @param array $strType    The user group type
 	 * @param array $arrGroups  An array of user groups
 	 * @param array $arrOptions An optional options array
 	 *
-	 * @return \NewsModel|null The model or null if there are no observers
+	 * @return \Model\Collection|TaskListModel[]|TaskListModel|null A collection of models or null if there are no lists
 	 */
 	public static function findPublishedByUserTypeAndGroups($strType, array $arrGroups = array(), array $arrOptions = array())
 	{
@@ -28,14 +50,14 @@ class TaskListModel extends \Model
 			$arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
 		}
 
-		if(!$arrOptions['order'])
+		if (!$arrOptions['order'])
 		{
 			$arrOptions['order'] = "$t.title";
 		}
 
 		$objModels = static::findBy($arrColumns, null, $arrOptions);
 
-		if($objModels === null || \BackendUser::getInstance()->isAdmin)
+		if ($objModels === null || \BackendUser::getInstance()->isAdmin)
 		{
 			return $objModels;
 		}
@@ -46,7 +68,7 @@ class TaskListModel extends \Model
 		{
 			$arrMatch = array();
 
-			if(!$objModels->protected)
+			if (!$objModels->protected)
 			{
 				$arrIds[] = $objModels->id;
 				continue;
@@ -56,13 +78,13 @@ class TaskListModel extends \Model
 			{
 				case CollabConfig::AUTHOR_TYPE_USER:
 					$arrMatch = array_intersect(deserialize($objModels->userGroups, true), $arrGroups);
-				break;
+					break;
 				case CollabConfig::AUTHOR_TYPE_MEMBER:
 					$arrMatch = array_intersect(deserialize($objModels->memberGroups, true), $arrGroups);
-				break;
+					break;
 			}
 
-			if(empty($arrMatch))
+			if (empty($arrMatch))
 			{
 				continue;
 			}
@@ -80,20 +102,20 @@ class TaskListModel extends \Model
 	 * @param array $arrGroups  An array of user groups
 	 * @param array $arrOptions An optional options array
 	 *
-	 * @return \NewsModel|null The model or null if there are no observers
+	 * @return \Model\Collection|TaskListModel[]|TaskListModel|null A collection of models or null if there are no lists
 	 */
 	public static function findExcludedByUserTypeAndGroups($strType, array $arrGroups = array(), array $arrOptions = array())
 	{
-		$t          = static::$strTable;
+		$t = static::$strTable;
 
-		if(!$arrOptions['order'])
+		if (!$arrOptions['order'])
 		{
 			$arrOptions['order'] = "$t.title";
 		}
 
 		$objModels = static::findAll($arrOptions);
 
-		if($objModels === null || \BackendUser::getInstance()->isAdmin)
+		if ($objModels === null || \BackendUser::getInstance()->isAdmin)
 		{
 			return null;
 		}
@@ -104,7 +126,7 @@ class TaskListModel extends \Model
 		{
 			$arrMatch = array();
 
-			if(!$objModels->protected)
+			if (!$objModels->protected)
 			{
 				continue;
 			}
@@ -119,7 +141,7 @@ class TaskListModel extends \Model
 					break;
 			}
 
-			if(empty($arrMatch))
+			if (empty($arrMatch))
 			{
 				$arrExclude[] = $objModels->id;
 				continue;

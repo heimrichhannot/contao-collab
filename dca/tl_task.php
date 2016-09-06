@@ -248,7 +248,7 @@ $GLOBALS['TL_DCA']['tl_task'] = array(
 			'exclude'   => true,
 			'filter'    => true,
 			'inputType' => 'checkbox',
-			'eval'      => array('doNotCopy' => true, 'submitOnChange' => true),
+			'eval'      => array('doNotCopy' => true),
 			'sql'       => "char(1) NOT NULL default ''",
 		),
 		'published'    => array(
