@@ -23,8 +23,8 @@ class TaskModel extends \Contao\Model
 	/**
 	 * Initialize a new TaskModel with title, description and set attributes but do not save
 	 *
-	 * @param        $title         Task title
-	 * @param string $description   Task description
+	 * @param        $title         string title
+	 * @param string $description   string description
 	 * @param array  $arrAttributes Array of attributes that will be set as Taskmodel attributes
 	 *
 	 * @return TaskModel The non saved TaskModel
